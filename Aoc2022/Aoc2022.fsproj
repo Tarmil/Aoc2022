@@ -6,11 +6,24 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Common.fs" />
-        <Compile Include="Day1.fs" />
-        <Compile Include="Day2.fs" />
         <Content Include="inputs\day1.txt" />
         <Content Include="inputs\day2.txt" />
+        <Compile Include="Common.fs" />
+        <None Include="Day1.exploration.fsx" />
+        <Compile Include="Day1.fs" />
+        <None Include="Day2.exploration.fsx" />
+        <Compile Include="Day2.fs" />
+        <Compile Include="Tests.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+        <PackageReference Include="Unquote" Version="6.1.0" />
+        <PackageReference Include="xunit" Version="2.4.2" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>

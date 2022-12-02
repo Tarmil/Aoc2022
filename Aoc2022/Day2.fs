@@ -1,8 +1,4 @@
-﻿#if INTERACTIVE
-#load "Common.fs"
-#else
-module Aoc2022.Day2
-#endif
+﻿module Aoc2022.Day2
 
 type Shape = Rock | Paper | Scissors
 
@@ -32,54 +28,6 @@ let roundOutcome opponent player =
     | Scissors, Paper
     | Paper, Rock -> Lose
 
-let roundScoreForPart1 opponent player =
-    outcomeScore (roundOutcome opponent player)
-    + shapeScore player
-
-let part1 (input: (Shape * Shape) list) : int =
-    input
-    |> List.sumBy (fun (opponent, player) ->
-        roundScoreForPart1 opponent player)
-
-roundScoreForPart1 Rock Paper
-roundScoreForPart1 Paper Rock
-part1 [(Rock, Paper); (Paper, Rock)]
-
-let (|Opponent|_|) char =
-    match char with
-    | 'A' -> Some Rock
-    | 'B' -> Some Paper
-    | 'C' -> Some Scissors
-    | _ -> None
-
-let (|Player|_|) char =
-    match char with
-    | 'X' -> Some Rock
-    | 'Y' -> Some Paper
-    | 'Z' -> Some Scissors
-    | _ -> None
-
-let tryParseRoundForPart1 (round: string) =
-    match List.ofSeq round with
-    | [ Opponent o; ' '; Player p ] -> Some (o, p)
-    | _ -> None
-
-tryParseRoundForPart1 "A Y"
-tryParseRoundForPart1 "A A"
-
-let parseInputForPart1 (input: string list) =
-    input |> List.choose tryParseRoundForPart1
-
-parseInputForPart1 ["A Y"; "A A"; "B Z"]
-
-let example = load "A Y
-B X
-C Z"
-
-example |> parseInputForPart1 |> part1
-
-loadInput "day2" |> parseInputForPart1 |> part1
-
 let shapeToPlayForOutcome opponent outcome =
     match opponent, outcome with
     | Rock, Win
@@ -92,18 +40,19 @@ let shapeToPlayForOutcome opponent outcome =
     | Rock, Draw
     | Paper, Lose -> Rock
 
-let roundScoreForPart2 opponent outcome =
-    shapeScore (shapeToPlayForOutcome opponent outcome)
-    + outcomeScore outcome
+let (|OpponentShape|_|) char =
+    match char with
+    | 'A' -> Some Rock
+    | 'B' -> Some Paper
+    | 'C' -> Some Scissors
+    | _ -> None
 
-roundScoreForPart2 Scissors Draw
-roundScoreForPart2 Rock Win
-
-let part2 (input: (Shape * Outcome) list) : int =
-    input
-    |> List.sumBy (fun (opponent, outcome) -> roundScoreForPart2 opponent outcome)
-
-part2 [(Scissors, Draw); (Rock, Win)]
+let (|PlayerShape|_|) char =
+    match char with
+    | 'X' -> Some Rock
+    | 'Y' -> Some Paper
+    | 'Z' -> Some Scissors
+    | _ -> None
 
 let (|Outcome|_|) char =
     match char with
@@ -112,14 +61,47 @@ let (|Outcome|_|) char =
     | 'Z' -> Some Win
     | _ -> None
 
-let tryParseRoundForPart2 (round: string) =
-    match List.ofSeq round with
-    | [ Opponent opp; ' '; Outcome out ] -> Some (opp, out)
-    | _ -> None
+module Part1 =
 
-let parseInputForPart2 input =
-    input |> List.choose tryParseRoundForPart2
+    module Domain =
 
-example |> parseInputForPart2 |> part2
+        let roundScore opponent player =
+            outcomeScore (roundOutcome opponent player)
+            + shapeScore player
 
-loadInput "day2" |> parseInputForPart2 |> part2
+        let solve (input: (Shape * Shape) list) : int =
+            input
+            |> List.sumBy (fun (opponent, player) ->
+                roundScore opponent player)
+
+    module Parsing =
+
+        let tryParseRound (round: string) =
+            match List.ofSeq round with
+            | [ OpponentShape o; ' '; PlayerShape p ] -> Some (o, p)
+            | _ -> None
+
+        let parseInput (input: string list) =
+            input |> List.choose tryParseRound
+
+module Part2 =
+
+    module Domain =
+
+        let roundScore opponent outcome =
+            shapeScore (shapeToPlayForOutcome opponent outcome)
+            + outcomeScore outcome
+
+        let solve (input: (Shape * Outcome) list) : int =
+            input
+            |> List.sumBy (fun (opponent, outcome) -> roundScore opponent outcome)
+
+    module Parsing =
+
+        let tryParseRound (round: string) =
+            match List.ofSeq round with
+            | [ OpponentShape opp; ' '; Outcome out ] -> Some (opp, out)
+            | _ -> None
+
+        let parseInput input =
+            input |> List.choose tryParseRound
