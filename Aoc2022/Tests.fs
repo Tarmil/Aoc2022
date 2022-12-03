@@ -67,7 +67,7 @@ C Z"
 
     [<Theory; MemberData (nameof ``part1 data``)>]
     let part1 (input: string list) (expected: int) =
-        let input = Day2.Part1.Parsing.parseInput input
+        let input = checkOk <@ Day2.Part1.Parsing.parseInput input @>
         test <@ Day2.Part1.Domain.solve input = expected @>
 
     let ``part2 data`` =
@@ -76,7 +76,7 @@ C Z"
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
-        let input = Day2.Part2.Parsing.parseInput input
+        let input = checkOk <@ Day2.Part2.Parsing.parseInput input @>
         test <@ Day2.Part2.Domain.solve input = expected @>
 
 module Day3 =

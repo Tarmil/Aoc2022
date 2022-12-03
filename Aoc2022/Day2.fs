@@ -1,67 +1,63 @@
 ﻿module Aoc2022.Day2
 
-type Shape = Rock | Paper | Scissors
+open FSharpx
 
-let shapeScore shape =
-    match shape with
-    | Rock -> 1
-    | Paper -> 2
-    | Scissors -> 3
+module Common =
 
-type Outcome = Win | Draw | Lose
+    module Domain =
 
-let outcomeScore outcome =
-    match outcome with
-    | Win -> 6
-    | Draw -> 3
-    | Lose -> 0
+        type Shape = Rock | Paper | Scissors
 
-let roundOutcome opponent player =
-    match opponent, player with
-    | Rock, Rock
-    | Paper, Paper
-    | Scissors, Scissors -> Draw
-    | Rock, Paper
-    | Paper, Scissors
-    | Scissors, Rock -> Win
-    | Rock, Scissors
-    | Scissors, Paper
-    | Paper, Rock -> Lose
+        let shapeScore shape =
+            match shape with
+            | Rock -> 1
+            | Paper -> 2
+            | Scissors -> 3
 
-let shapeToPlayForOutcome opponent outcome =
-    match opponent, outcome with
-    | Rock, Win
-    | Paper, Draw
-    | Scissors, Lose -> Paper
-    | Paper, Win
-    | Scissors, Draw
-    | Rock, Lose -> Scissors
-    | Scissors, Win
-    | Rock, Draw
-    | Paper, Lose -> Rock
+        type Outcome = Win | Draw | Lose
 
-let (|OpponentShape|_|) char =
-    match char with
-    | 'A' -> Some Rock
-    | 'B' -> Some Paper
-    | 'C' -> Some Scissors
-    | _ -> None
+        let outcomeScore outcome =
+            match outcome with
+            | Win -> 6
+            | Draw -> 3
+            | Lose -> 0
 
-let (|PlayerShape|_|) char =
-    match char with
-    | 'X' -> Some Rock
-    | 'Y' -> Some Paper
-    | 'Z' -> Some Scissors
-    | _ -> None
+        let roundOutcome opponent player =
+            match opponent, player with
+            | Rock, Rock
+            | Paper, Paper
+            | Scissors, Scissors -> Draw
+            | Rock, Paper
+            | Paper, Scissors
+            | Scissors, Rock -> Win
+            | Rock, Scissors
+            | Scissors, Paper
+            | Paper, Rock -> Lose
 
-let (|Outcome|_|) char =
-    match char with
-    | 'X' -> Some Lose
-    | 'Y' -> Some Draw
-    | 'Z' -> Some Win
-    | _ -> None
+        let shapeToPlayForOutcome opponent outcome =
+            match opponent, outcome with
+            | Rock, Win
+            | Paper, Draw
+            | Scissors, Lose -> Paper
+            | Paper, Win
+            | Scissors, Draw
+            | Rock, Lose -> Scissors
+            | Scissors, Win
+            | Rock, Draw
+            | Paper, Lose -> Rock
+
+    module Parsing =
+        open Domain
+
+        let (|OpponentShape|_|) char =
+            match char with
+            | 'A' -> Some Rock
+            | 'B' -> Some Paper
+            | 'C' -> Some Scissors
+            | _ -> None
 
 module Part1 =
+    open Common.Domain
 
     module Domain =
 
@@ -75,16 +71,27 @@ module Part1 =
                 roundScore opponent player)
 
     module Parsing =
+        open Common.Parsing
+
+        let (|PlayerShape|_|) char =
+            match char with
+            | 'X' -> Some Rock
+            | 'Y' -> Some Paper
+            | 'Z' -> Some Scissors
+            | _ -> None
 
         let tryParseRound (round: string) =
             match List.ofSeq round with
-            | [ OpponentShape o; ' '; PlayerShape p ] -> Some (o, p)
-            | _ -> None
+            | [ OpponentShape o; ' '; PlayerShape p ] -> Ok (o, p)
+            | _ -> Error $"Invalid round description: {round}"
 
-        let parseInput (input: string list) =
-            input |> List.choose tryParseRound
+        let parseInput (input: string list) : Result<(Shape * Shape) list, string> =
+            input
+            |> List.map tryParseRound
+            |> Result.sequence
 
 module Part2 =
+    open Common.Domain
 
     module Domain =
 
@@ -97,11 +104,21 @@ module Part2 =
             |> List.sumBy (fun (opponent, outcome) -> roundScore opponent outcome)
 
     module Parsing =
+        open Common.Parsing
+
+        let (|Outcome|_|) char =
+            match char with
+            | 'X' -> Some Lose
+            | 'Y' -> Some Draw
+            | 'Z' -> Some Win
+            | _ -> None
 
         let tryParseRound (round: string) =
             match List.ofSeq round with
-            | [ OpponentShape opp; ' '; Outcome out ] -> Some (opp, out)
-            | _ -> None
+            | [ OpponentShape opp; ' '; Outcome out ] -> Ok (opp, out)
+            | _ -> Error $"Invalid round description: {round}"
 
         let parseInput input =
-            input |> List.choose tryParseRound
+            input
+            |> List.map tryParseRound
+            |> Result.sequence
