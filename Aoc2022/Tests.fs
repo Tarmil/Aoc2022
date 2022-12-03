@@ -4,13 +4,19 @@ open Xunit
 open Swensen.Unquote
 
 module Common =
-    open System.IO
 
     let load (name: string) (expected: int) =
         [| box (load name); box expected |]
 
     let loadInput (name: string) (expected: int) =
         [| box (loadInput name); box expected |]
+
+    let private getOk = function
+        | Ok x -> x
+        | Error e -> failwith e
+
+    let checkOk expr =
+        trap <@ getOk %expr @>
 
 open Common
 
@@ -72,3 +78,30 @@ C Z"
     let part2 (input: string list) (expected: int) =
         let input = Day2.Part2.Parsing.parseInput input
         test <@ Day2.Part2.Domain.solve input = expected @>
+
+module Day3 =
+    let sample = "\
+vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw"
+
+    let ``part1 data`` =
+        [| load sample 157
+           loadInput "day3" 8515 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string list) (expected: int) =
+        let input = checkOk <@ Day3.Part1.Parsing.parseInput input @>
+        test <@ Day3.Part1.Domain.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| load sample 70
+           loadInput "Day3" 2434 |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string list) (expected: int) =
+        let input = checkOk <@ Day3.Part2.Parsing.parseInput input @>
+        test <@ Day3.Part2.Domain.solve input = Ok expected @>

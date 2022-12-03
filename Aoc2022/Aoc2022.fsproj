@@ -8,15 +8,19 @@
     <ItemGroup>
         <Content Include="inputs\day1.txt" />
         <Content Include="inputs\day2.txt" />
+        <Content Include="inputs\day3.txt" />
         <Compile Include="Common.fs" />
         <None Include="Day1.exploration.fsx" />
         <Compile Include="Day1.fs" />
         <None Include="Day2.exploration.fsx" />
         <Compile Include="Day2.fs" />
+        <None Include="Day3.exploration.fsx" />
+        <Compile Include="Day3.fs" />
         <Compile Include="Tests.fs" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="FSharpx.Extras" Version="3.1.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
         <PackageReference Include="Unquote" Version="6.1.0" />
         <PackageReference Include="xunit" Version="2.4.2" />
