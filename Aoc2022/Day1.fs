@@ -1,26 +1,71 @@
 ﻿module Aoc2022.Day1
 
-module Domain =
+open System
+open FSharpx
+open FSharpx.Collections
 
-    let part1 (input: int list list) : int =
-        input
-        |> List.map List.sum
-        |> List.max
+module Common =
 
-    let part2 (input: int list list) : int =
-        input
-        |> List.map List.sum
-        |> List.sortDescending
-        |> List.take 3
-        |> List.sum
+    module Domain =
 
-module Parsing =
+        type Elf = Elf of itemCalories: int list
 
-    let parseInput (input: string list) : int list list =
-        let rec loop current input =
-            match input with
-            | [] -> [ List.rev current ]
-            | "" :: rest -> List.rev current :: loop [] rest
-            | item :: rest -> loop (int item :: current) rest
+    module Parsing =
+        open Domain
 
-        loop [] input
+        let parseItemCalories (s: string) =
+            match Int32.TryParse(s) with
+            | true, x -> Ok x
+            | false, _ -> Error $"Invalid calories: {s}"
+
+        let parseElf (s: string list) =
+            Result.result {
+                let! itemCalories =
+                    s
+                    |> List.map parseItemCalories
+                    |> Result.sequence
+                return Elf itemCalories
+            }
+
+        let parseInput (input: string list) : Result<Elf list, string> =
+            let rec loop acc input =
+                Result.result {
+                    match List.split String.IsNullOrEmpty input with
+                    | lastElf, [] ->
+                        let! lastCalories = parseElf lastElf
+                        return List.rev (lastCalories :: acc)
+                    | elf, _ :: rest ->
+                        let! elfCalories = parseElf elf
+                        return! loop (elfCalories :: acc) rest
+                }
+            loop [] input
+
+module Part1 =
+    open Common.Domain
+
+    module Domain =
+
+        let solve (input: Elf list) : int =
+            input
+            |> List.map (fun (Elf itemCalories) -> List.sum itemCalories)
+            |> List.max
+
+    module Parsing =
+
+        let parseInput input = Common.Parsing.parseInput input
+
+module Part2 =
+    open Common.Domain
+
+    module Domain =
+
+        let solve (input: Elf list) : int =
+            input
+            |> List.map (fun (Elf itemCalories) -> List.sum itemCalories)
+            |> List.sortDescending
+            |> List.take 3
+            |> List.sum
+
+    module Parsing =
+
+        let parseInput input = Common.Parsing.parseInput input

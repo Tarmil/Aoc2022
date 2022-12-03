@@ -43,8 +43,8 @@ module Day1 =
 
     [<Theory; MemberData (nameof ``part1 data``)>]
     let part1 (input: string list) (expected: int) =
-        let input = Day1.Parsing.parseInput input
-        test <@ Day1.Domain.part1 input = expected @>
+        let input = checkOk <@ Day1.Part1.Parsing.parseInput input @>
+        test <@ Day1.Part1.Domain.solve input = expected @>
 
     let ``part2 data`` =
         [| load sample 45000
@@ -52,8 +52,8 @@ module Day1 =
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
-        let input = Day1.Parsing.parseInput input
-        test <@ Day1.Domain.part2 input = expected @>
+        let input = checkOk <@ Day1.Part2.Parsing.parseInput input @>
+        test <@ Day1.Part2.Domain.solve input = expected @>
 
 module Day2 =
     let sample = "\
