@@ -61,17 +61,18 @@ module Part1 =
 
     module Domain =
 
-        let roundScore opponent player =
+        type Round = Round of opponent: Shape * player: Shape
+
+        let roundScore (Round (opponent, player)) =
             outcomeScore (roundOutcome opponent player)
             + shapeScore player
 
-        let solve (input: (Shape * Shape) list) : int =
-            input
-            |> List.sumBy (fun (opponent, player) ->
-                roundScore opponent player)
+        let solve (input: Round list) : int =
+            input |> List.sumBy roundScore
 
     module Parsing =
         open Common.Parsing
+        open Domain
 
         let (|PlayerShape|_|) char =
             match char with
@@ -85,26 +86,32 @@ module Part1 =
             | [ OpponentShape o; ' '; PlayerShape p ] -> Ok (o, p)
             | _ -> Error $"Invalid round description: {round}"
 
-        let parseInput (input: string list) : Result<(Shape * Shape) list, string> =
-            input
-            |> List.map tryParseRound
-            |> Result.sequence
+        let parseInput (input: string list) : Result<Round list, string> =
+            Result.result {
+                let! rounds =
+                    input
+                    |> List.map tryParseRound
+                    |> Result.sequence
+                return List.map Round rounds
+            }
 
 module Part2 =
     open Common.Domain
 
     module Domain =
 
-        let roundScore opponent outcome =
+        type Round = Round of opponent: Shape * outcome: Outcome
+
+        let roundScore (Round (opponent, outcome)) =
             shapeScore (shapeToPlayForOutcome opponent outcome)
             + outcomeScore outcome
 
-        let solve (input: (Shape * Outcome) list) : int =
-            input
-            |> List.sumBy (fun (opponent, outcome) -> roundScore opponent outcome)
+        let solve (input: Round list) : int =
+            input |> List.sumBy roundScore
 
     module Parsing =
         open Common.Parsing
+        open Domain
 
         let (|Outcome|_|) char =
             match char with
@@ -119,6 +126,10 @@ module Part2 =
             | _ -> Error $"Invalid round description: {round}"
 
         let parseInput input =
-            input
-            |> List.map tryParseRound
-            |> Result.sequence
+            Result.result {
+                let! rounds =
+                    input
+                    |> List.map tryParseRound
+                    |> Result.sequence
+                return List.map Round rounds
+            }
