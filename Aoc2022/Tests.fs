@@ -11,13 +11,6 @@ module Common =
     let loadInput (name: string) (expected: int) =
         [| box (loadInput name); box expected |]
 
-    let private getOk = function
-        | Ok x -> x
-        | Error e -> failwith e
-
-    let checkOk expr =
-        trap <@ getOk %expr @>
-
 open Common
 
 module Day1 =
@@ -43,8 +36,7 @@ module Day1 =
 
     [<Theory; MemberData (nameof ``part1 data``)>]
     let part1 (input: string list) (expected: int) =
-        let input = checkOk <@ Day1.Part1.Parsing.parseInput input @>
-        test <@ Day1.Part1.Domain.solve input = expected @>
+        test <@ Day1.Part1.solve input = Ok expected @>
 
     let ``part2 data`` =
         [| load sample 45000
@@ -52,8 +44,7 @@ module Day1 =
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
-        let input = checkOk <@ Day1.Part2.Parsing.parseInput input @>
-        test <@ Day1.Part2.Domain.solve input = expected @>
+        test <@ Day1.Part2.solve input = Ok expected @>
 
 module Day2 =
     let sample = "\
@@ -67,8 +58,7 @@ C Z"
 
     [<Theory; MemberData (nameof ``part1 data``)>]
     let part1 (input: string list) (expected: int) =
-        let input = checkOk <@ Day2.Part1.Parsing.parseInput input @>
-        test <@ Day2.Part1.Domain.solve input = expected @>
+        test <@ Day2.Part1.solve input = Ok expected @>
 
     let ``part2 data`` =
         [| load sample 12
@@ -76,8 +66,7 @@ C Z"
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
-        let input = checkOk <@ Day2.Part2.Parsing.parseInput input @>
-        test <@ Day2.Part2.Domain.solve input = expected @>
+        test <@ Day2.Part2.solve input = Ok expected @>
 
 module Day3 =
     let sample = "\
@@ -94,8 +83,7 @@ CrZsJsPPZsGzwwsLwLmpwMDw"
 
     [<Theory; MemberData (nameof ``part1 data``)>]
     let part1 (input: string list) (expected: int) =
-        let input = checkOk <@ Day3.Part1.Parsing.parseInput input @>
-        test <@ Day3.Part1.Domain.solve input = Ok expected @>
+        test <@ Day3.Part1.solve input = Ok expected @>
 
     let ``part2 data`` =
         [| load sample 70
@@ -103,8 +91,7 @@ CrZsJsPPZsGzwwsLwLmpwMDw"
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
-        let input = checkOk <@ Day3.Part2.Parsing.parseInput input @>
-        test <@ Day3.Part2.Domain.solve input = Ok expected @>
+        test <@ Day3.Part2.solve input = Ok expected @>
 
 module Day4 =
     let sample = "\
@@ -121,8 +108,7 @@ module Day4 =
 
     [<Theory; MemberData (nameof ``part1 data``)>]
     let part1 (input: string list) (expected: int) =
-        let input = checkOk <@ Day4.Part1.Parsing.parseInput input @>
-        test <@ Day4.Part1.Domain.solve input = expected @>
+        test <@ Day4.Part1.solve input = Ok expected @>
 
     let ``part2 data`` =
         [| load sample 4
@@ -130,5 +116,4 @@ module Day4 =
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
-        let input = checkOk <@ Day4.Part2.Parsing.parseInput input @>
-        test <@ Day4.Part2.Domain.solve input = expected @>
+        test <@ Day4.Part2.solve input = Ok expected @>

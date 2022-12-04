@@ -54,6 +54,11 @@ module Part1 =
 
         let parseInput input = Common.Parsing.parseInput input
 
+    let solve input =
+        input
+        |> Parsing.parseInput
+        |> Result.map Domain.solve
+
 module Part2 =
     open Common.Domain
 
@@ -69,3 +74,8 @@ module Part2 =
     module Parsing =
 
         let parseInput input = Common.Parsing.parseInput input
+
+    let solve input =
+        input
+        |> Parsing.parseInput
+        |> Result.map Domain.solve

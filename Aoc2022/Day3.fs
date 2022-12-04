@@ -78,6 +78,11 @@ module Part1 =
             |> List.map tryParseRucksack
             |> Result.sequence
 
+    let solve input =
+        input
+        |> Parsing.parseInput
+        |> Result.bind Domain.solve
+
 module Part2 =
     open Common.Domain
 
@@ -115,3 +120,8 @@ module Part2 =
                     |> List.chunkBySize 3
                     |> List.map ElfGroup
             }
+
+    let solve input =
+        input
+        |> Parsing.parseInput
+        |> Result.bind Domain.solve

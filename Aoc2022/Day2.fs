@@ -95,6 +95,11 @@ module Part1 =
                 return List.map Round rounds
             }
 
+    let solve input =
+        input
+        |> Parsing.parseInput
+        |> Result.map Domain.solve
+
 module Part2 =
     open Common.Domain
 
@@ -133,3 +138,8 @@ module Part2 =
                     |> Result.sequence
                 return List.map Round rounds
             }
+
+    let solve input =
+        input
+        |> Parsing.parseInput
+        |> Result.map Domain.solve
