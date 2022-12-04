@@ -105,3 +105,30 @@ CrZsJsPPZsGzwwsLwLmpwMDw"
     let part2 (input: string list) (expected: int) =
         let input = checkOk <@ Day3.Part2.Parsing.parseInput input @>
         test <@ Day3.Part2.Domain.solve input = Ok expected @>
+
+module Day4 =
+    let sample = "\
+2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8"
+
+    let ``part1 data`` =
+        [| load sample 2
+           loadInput "day4" 413 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string list) (expected: int) =
+        let input = checkOk <@ Day4.Part1.Parsing.parseInput input @>
+        test <@ Day4.Part1.Domain.solve input = expected @>
+
+    let ``part2 data`` =
+        [| load sample 4
+           loadInput "Day4" 806 |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string list) (expected: int) =
+        let input = checkOk <@ Day4.Part2.Parsing.parseInput input @>
+        test <@ Day4.Part2.Domain.solve input = expected @>
