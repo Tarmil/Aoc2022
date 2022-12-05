@@ -3,17 +3,25 @@
 open Xunit
 open Swensen.Unquote
 
-module Common =
+module InputAsList =
 
-    let load (name: string) (expected: int) =
-        [| box (load name); box expected |]
+    let load (input: string) expected =
+        [| box (load input); box expected |]
 
-    let loadInput (name: string) (expected: int) =
+    let loadInput (name: string) expected =
         [| box (loadInput name); box expected |]
 
-open Common
+module InputAsString =
+
+    let load (input: string) expected =
+        [| box input; box expected |]
+
+    let loadInput (name: string) expected =
+        [| box (loadInputAsOneString name); box expected |]
 
 module Day1 =
+    open InputAsList
+
     let sample = "\
 1000
 2000
@@ -47,6 +55,8 @@ module Day1 =
         test <@ Day1.Part2.solve input = Ok expected @>
 
 module Day2 =
+    open InputAsList
+
     let sample = "\
 A Y
 B X
@@ -62,13 +72,15 @@ C Z"
 
     let ``part2 data`` =
         [| load sample 12
-           loadInput "Day2" 12881 |]
+           loadInput "day2" 12881 |]
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
         test <@ Day2.Part2.solve input = Ok expected @>
 
 module Day3 =
+    open InputAsList
+
     let sample = "\
 vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
@@ -87,13 +99,15 @@ CrZsJsPPZsGzwwsLwLmpwMDw"
 
     let ``part2 data`` =
         [| load sample 70
-           loadInput "Day3" 2434 |]
+           loadInput "day3" 2434 |]
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
         test <@ Day3.Part2.solve input = Ok expected @>
 
 module Day4 =
+    open InputAsList
+
     let sample = "\
 2-4,6-8
 2-3,4-5
@@ -112,8 +126,37 @@ module Day4 =
 
     let ``part2 data`` =
         [| load sample 4
-           loadInput "Day4" 806 |]
+           loadInput "day4" 806 |]
 
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string list) (expected: int) =
         test <@ Day4.Part2.solve input = Ok expected @>
+
+module Day5 =
+    open InputAsString
+
+    let sample = "    [D]    \n\
+[N] [C]    \n\
+[Z] [M] [P]
+ 1   2   3
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2"
+
+    let ``part1 data`` =
+        [| load sample "CMZ"
+           loadInput "day5" "FJSRQCFTN" |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string) (expected: string) =
+        test <@ Day5.Part1.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| load sample "MCD"
+           loadInput "day5" "CJVLJQPHS" |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string) (expected: string) =
+        test <@ Day5.Part2.solve input = Ok expected @>
