@@ -8,6 +8,10 @@ let load (value: string) =
     |> List.ofArray
 
 let loadInput name =
-    let path = Path.Combine(__SOURCE_DIRECTORY__, "inputs", name + ".txt")
-    File.ReadAllLines path
+    Path.Combine(__SOURCE_DIRECTORY__, "inputs", name + ".txt")
+    |> File.ReadAllLines
     |> List.ofArray
+
+let loadInputAsOneString name =
+    Path.Combine(__SOURCE_DIRECTORY__, "inputs", name + ".txt")
+    |> File.ReadAllText
