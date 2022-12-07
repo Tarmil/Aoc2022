@@ -160,3 +160,31 @@ move 1 from 1 to 2"
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string) (expected: string) =
         test <@ Day5.Part2.solve input = Ok expected @>
+
+module Day6 =
+    open InputAsString
+
+    let samples =
+        [| "mjqjpqmgbljsphdztnvjfqwrcgsmlb", 7, 19
+           "bvwbjplbgvbhsrlpgdmjqwftvncz", 5, 23
+           "nppdvjthqldpwncqszvftbrmjlhg", 6, 23
+           "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10, 29
+           "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11, 26 |]
+
+    let ``part1 data`` =
+        [| for sample, expected, _ in samples do
+                load sample expected
+           loadInput "day6" 1658 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string) (expected: int) =
+        test <@ Day6.Part1.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| for sample, _, expected in samples do
+                load sample expected
+           loadInput "day6" 2260 |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string) (expected: int) =
+        test <@ Day6.Part2.solve input = Ok expected @>
