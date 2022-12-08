@@ -22,6 +22,7 @@
         <Compile Include="Day6.fs" />
         <None Include="Day7.exploration.fsx" />
         <Compile Include="Day7.fs" />
+        <None Include="Day8.exploration.fsx" />
         <Compile Include="Tests.fs" />
     </ItemGroup>
 
