@@ -188,3 +188,46 @@ module Day6 =
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string) (expected: int) =
         test <@ Day6.Part2.solve input = Ok expected @>
+
+module Day7 =
+    open InputAsString
+
+    let sample = "$ cd /
+$ ls
+dir a
+14848514 b.txt
+8504156 c.dat
+dir d
+$ cd a
+$ ls
+dir e
+29116 f
+2557 g
+62596 h.lst
+$ cd e
+$ ls
+584 i
+$ cd ..
+$ cd ..
+$ cd d
+$ ls
+4060174 j
+8033020 d.log
+5626152 d.ext
+7214296 k"
+
+    let ``part1 data`` =
+        [| load sample 95437
+           loadInput "day7" 1770595 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string) (expected: int) =
+        test <@ Day7.Part1.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| load sample 24933642
+           loadInput "day7" 2195372 |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string) (expected: int) =
+        test <@ Day7.Part2.solve input = Ok expected @>
