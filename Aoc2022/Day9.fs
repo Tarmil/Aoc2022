@@ -24,29 +24,21 @@ module Common =
 
         let followKnot (leader: Pos) (follower: Pos) : Pos =
             let d = leader - follower
-            let newFollower =
-                if norm d > 1 then
-                    follower + normalize d
-                else
-                    follower
-            newFollower
+            if norm d > 1 then
+                follower + normalize d
+            else
+                follower
 
         type Rope = { knots: Pos NonEmptyList }
+        let makeRope knots = { knots = knots }
 
         let moveRopeByDir (dir: Vec) (rope: Rope) =
             let newHead = NonEmptyList.head rope.knots + dir
 
-            let finalState =
-                let initialState = {| knotToFollow = newHead; movedRopeFront = [] |}
-
-                (initialState, NonEmptyList.tail rope.knots)
-                ||> List.fold (fun state thisKnot ->
-                    let newThisKnot = thisKnot |> followKnot state.knotToFollow
-                    {| knotToFollow = newThisKnot
-                       movedRopeFront = newThisKnot :: state.movedRopeFront |})
-
-            {| movedRope = { knots = NonEmptyList.create newHead (List.rev finalState.movedRopeFront) }
-               movedTail = finalState.knotToFollow |}
+            NonEmptyList.tail rope.knots
+            |> List.scan followKnot newHead
+            |> NonEmptyList.ofList
+            |> makeRope
 
         let origin : Pos = { x = 0; y = 0 }
 
@@ -60,9 +52,10 @@ module Common =
 
             (initialState, {1..instruction.count})
             ||> Seq.fold (fun state _ ->
-                let moveRes = moveRopeByDir instruction.dir state.rope
-                {| rope = moveRes.movedRope
-                   visited = Set.add moveRes.movedTail state.visited |})
+                let movedRope = moveRopeByDir instruction.dir state.rope
+                let movedTail = NonEmptyList.last movedRope.knots
+                {| rope = movedRope
+                   visited = Set.add movedTail state.visited |})
 
         type Input = Instruction list
 
