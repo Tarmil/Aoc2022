@@ -231,3 +231,41 @@ $ ls
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string) (expected: int) =
         test <@ Day7.Part2.solve input = Ok expected @>
+
+module Day9 =
+    open InputAsString
+
+    let sample = "R 4
+U 4
+L 3
+D 1
+R 4
+D 1
+L 5
+R 2"
+
+    let ``part1 data`` =
+        [| load sample 13
+           loadInput "day9" 6057 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string) (expected: int) =
+        test <@ Day9.Part1.solve input = Ok expected @>
+
+    let sample2 = "R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20"
+
+    let ``part2 data`` =
+        [| load sample 1
+           load sample2 36
+           loadInput "day9" 2514 |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string) (expected: int) =
+        test <@ Day9.Part2.solve input = Ok expected @>
