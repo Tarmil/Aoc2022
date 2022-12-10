@@ -269,3 +269,34 @@ U 20"
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string) (expected: int) =
         test <@ Day9.Part2.solve input = Ok expected @>
+
+module Day10 =
+    open InputAsString
+
+    let ``part1 data`` =
+        [| loadInput "day10.sample" 13140
+           loadInput "day10" 14560 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string) (expected: int) =
+        test <@ Day10.Part1.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| loadInput "day10.sample" "\
+##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######....."
+           loadInput "day10" "\
+####.#..#.###..#..#.####.###..#..#.####.
+#....#.#..#..#.#..#.#....#..#.#..#....#.
+###..##...#..#.####.###..#..#.#..#...#..
+#....#.#..###..#..#.#....###..#..#..#...
+#....#.#..#.#..#..#.#....#....#..#.#....
+####.#..#.#..#.#..#.####.#.....##..####." |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string) (expected: string) =
+        test <@ Day10.Part2.solve input = Ok expected @>
