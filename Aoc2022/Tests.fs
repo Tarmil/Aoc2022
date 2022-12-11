@@ -300,3 +300,22 @@ module Day10 =
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string) (expected: string) =
         test <@ Day10.Part2.solve input = Ok expected @>
+
+module Day11 =
+    open InputAsString
+
+    let ``part1 data`` =
+        [| loadInput "day11.sample" 10605L
+           loadInput "day11" 55930L |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string) (expected: int64) =
+        test <@ Day11.Part1.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| loadInput "day11.sample" 2713310158L
+           loadInput "day11" 14636993466L |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string) (expected: int64) =
+        test <@ Day11.Part2.solve input = Ok expected @>
