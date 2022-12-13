@@ -319,3 +319,47 @@ module Day11 =
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string) (expected: int64) =
         test <@ Day11.Part2.solve input = Ok expected @>
+
+module Day13 =
+    open InputAsString
+
+    let sample = "[1,1,3,1,1]
+[1,1,5,1,1]
+
+[[1],[2,3,4]]
+[[1],4]
+
+[9]
+[[8,7,6]]
+
+[[4,4],4,4]
+[[4,4],4,4,4]
+
+[7,7,7,7]
+[7,7,7]
+
+[]
+[3]
+
+[[[]]]
+[[]]
+
+[1,[2,[3,[4,[5,6,7]]]],8,9]
+[1,[2,[3,[4,[5,6,0]]]],8,9]
+"
+
+    let ``part1 data`` =
+        [| load sample 13
+           loadInput "day13" 5843 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string) (expected: int) =
+        test <@ Day13.Part1.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| load sample 140
+           loadInput "day13" 26289 |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string) (expected: int) =
+        test <@ Day13.Part2.solve input = Ok expected @>
