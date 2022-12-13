@@ -30,6 +30,7 @@
         <None Include="Day11.exploration.fsx" />
         <Compile Include="Day11.fs" />
         <None Include="Day12.exploration.fsx" />
+        <Compile Include="Day12.fs" />
         <None Include="Day13.exploration.fsx" />
         <Compile Include="Day13.fs" />
         <Compile Include="Tests.fs" />

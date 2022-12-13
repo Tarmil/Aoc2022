@@ -320,6 +320,31 @@ module Day11 =
     let part2 (input: string) (expected: int64) =
         test <@ Day11.Part2.solve input = Ok expected @>
 
+module Day12 =
+    open InputAsList
+
+    let sample = "Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi"
+
+    let ``part1 data`` =
+        [| load sample 31
+           loadInput "day12" 528 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string list) (expected: int) =
+        test <@ Day12.Part1.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| load sample 29
+           loadInput "day12" 522 |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string list) (expected: int) =
+        test <@ Day12.Part2.solve input = Ok expected @>
+
 module Day13 =
     open InputAsString
 

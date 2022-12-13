@@ -34,7 +34,7 @@ let loadGraph (input: string list) =
         input
         |> Seq.map (Seq.map (function
             | 'S' -> 0
-            | 'E' -> 25
+            | 'E' -> 26
             | c -> int c - int 'a'))
         |> array2D
     let height = graph.GetLength(1)
