@@ -388,3 +388,26 @@ module Day13 =
     [<Theory; MemberData (nameof ``part2 data``)>]
     let part2 (input: string) (expected: int) =
         test <@ Day13.Part2.solve input = Ok expected @>
+
+module Day14 =
+    open InputAsString
+
+    let sample = "498,4 -> 498,6 -> 496,6
+503,4 -> 502,4 -> 502,9 -> 494,9
+"
+
+    let ``part1 data`` =
+        [| load sample 24
+           loadInput "day14" 757 |]
+
+    [<Theory; MemberData (nameof ``part1 data``)>]
+    let part1 (input: string) (expected: int) =
+        test <@ Day14.Part1.solve input = Ok expected @>
+
+    let ``part2 data`` =
+        [| load sample 93
+           loadInput "day14" 24943 |]
+
+    [<Theory; MemberData (nameof ``part2 data``)>]
+    let part2 (input: string) (expected: int) =
+        test <@ Day14.Part2.solve input = Ok expected @>
